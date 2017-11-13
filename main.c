@@ -45,7 +45,6 @@ int main(void)
 	char *line = NULL, **args, **path;
 
 	path = parse_args(getenv("PATH"), ":");
-	printf("%s\n", path[0]);
 	while(1)
 	{
 		_getprompt();

@@ -22,5 +22,5 @@ char *_strcpy(char *dest, char *src);
 char *_getenv(const char *name);
 int get_index(const char *name);
 char *_strcat(char *dest, char *src);
-int check_slash(char *arg)
+int check_slash(char *arg);
 #endif
