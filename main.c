@@ -1,6 +1,10 @@
 #include "header.h"
+
 /**
- *
+ * parse_args - parse args as strings, store in buffer
+ * @line: user input
+ * @delim: set delimiter
+ * Return: ptr to strings of args
  */
 char **parse_args(char *line, char *delim)
 {
@@ -11,7 +15,7 @@ char **parse_args(char *line, char *delim)
 	if (args == NULL || line == NULL)
 		exit(EXIT_FAILURE);
 	token = strtok(line, delim);
-	
+
 	while (token != NULL)
 	{
 		args[i] = token;
@@ -24,6 +28,11 @@ char **parse_args(char *line, char *delim)
 	return (args);
 }
 
+/**
+ * check_slash - checks if arg has slash char
+ * @arg: ptr to strs of args
+ * Return: 1 if args has slash, 0 otherwise
+ */
 int check_slash(char *arg)
 {
 	int i = 0;
@@ -37,6 +46,10 @@ int check_slash(char *arg)
 	return (0);
 }
 
+/**
+ * main - shell program
+ * Return: 0
+ */
 int main(void)
 {
 	ssize_t bytes;
@@ -52,21 +65,13 @@ int main(void)
 		bytes = getline(&line, &n, stdin);
 		if (bytes == EOF)
 			break;
-		args = parse_args(line, " \n\t");
+		args = parse_args(line, "\n \t");
 		child_pid = fork();
 		if (child_pid == -1)
 			perror("ERROR");
 		if (child_pid == 0)
 		{
-			/*if (_strcmp(args[0], "env"))
-			{
-				while (environ[i])
-				{
-					write(1, environ[i], _strlen(environ[i]));
-					i++;
-				}
-			}
-			else*/ if (check_slash(args[0]))
+			if (check_slash(args[0]))
 			{
 				if (execve(args[0], args, NULL) == -1)
 					exit(98);
