@@ -8,14 +8,15 @@ int isInString(char a, char *lst) {
 	return (0);
 }
 
-char* my_strtok(char *src, const char *delims) {
+char* my_strtok(char *src, char *delims) {
 	static char *s_src = NULL;
+	char *start, *end;
 
 	if(src)
 		s_src = src;
 
-	char *start = s_src;
-	char *end = s_src;
+	start = s_src;
+	end = s_src;
 
 	if(*start == '\0')
 		return NULL;
