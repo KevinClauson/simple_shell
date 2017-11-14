@@ -20,3 +20,25 @@ char *_strcat(char *dest, char *src)
 	dest[i + j] = '\0';
 	return (dest);
 }
+int _strcmp(char *s1, char *s2)
+{
+	int i;
+
+	for (i = 0; s1[i] == s2[i] && s1[i] != '\0'; ++i)
+		;
+	return (s1[i] - s2[i]);
+}
+
+/**
+ * _strlen - returns length of a string
+ * @s: input ptr to a char
+ * Return: length of string
+ */
+int _strlen(char *s)
+{
+	int i = 0;
+
+	while (s[i])
+		i++;
+	return (i);
+}

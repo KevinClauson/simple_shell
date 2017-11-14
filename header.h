@@ -23,4 +23,6 @@ char *_getenv(const char *name);
 int get_index(const char *name);
 char *_strcat(char *dest, char *src);
 int check_slash(char *arg);
+int _strcmp(char *s1, char *s2);
+int _strlen(char *s);
 #endif

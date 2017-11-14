@@ -19,6 +19,8 @@ char **parse_args(char *line, char *delim)
 		token = strtok(NULL, delim);
 	}
 	args[i] = NULL;
+	if (_strcmp(args[0], "exit") == 0)
+		exit(98);
 	return (args);
 }
 
@@ -39,13 +41,13 @@ int check_slash(char *arg)
 int main(void)
 {
 	ssize_t bytes;
-	size_t n = 0;
+	size_t n = 0, i = 0;
 	int status;
 	pid_t child_pid;
-	char *line = NULL, **args, **path;
+	char *line = NULL, **args, **path, buffer_path[BUFF_SIZE];
 
 	path = parse_args(getenv("PATH"), ":");
-	while(1)
+	while (1)
 	{
 		_getprompt();
 		bytes = getline(&line, &n, stdin);
@@ -57,12 +59,37 @@ int main(void)
 			perror("ERROR");
 		if (child_pid == 0)
 		{
-			if (execve(args[0], args, NULL) == -1)
-				exit(98);
+			/*if (_strcmp(args[0], "env"))
+			{
+				while (environ[i])
+				{
+					write(1, environ[i], _strlen(environ[i]));
+					i++;
+				}
+			}
+			else*/ if (check_slash(args[0]))
+			{
+				if (execve(args[0], args, NULL) == -1)
+					exit(98);
+			}
+			else
+			{
+				while (path[i])
+				{
+					_strcpy(buffer_path, path[i]);
+					_strcat(buffer_path, "/");
+					_strcat(buffer_path, args[0]);
+					if (execve(buffer_path, args, NULL) != -1)
+						break;
+					i++;
+				}
+			}
+				/* check path */	
 		}
 		else
 			wait(&status);
 	}
+	free(path);
 	free(line);
 	free(args);
 	return (0);
