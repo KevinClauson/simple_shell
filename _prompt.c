@@ -1,5 +1,8 @@
 #include "header.h"
 
+/**
+ * _getprompt - prompt for shell
+ */
 void _getprompt(void)
 {
 	int i, indx, len;
