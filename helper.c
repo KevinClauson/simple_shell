@@ -1,5 +1,11 @@
 #include "header.h"
 
+/**
+ * _strcpy - copies src string to dest buffer
+ * @dest: destination buffer
+ * @src: source to copy to buffer
+ * Return: dest ptr
+ */
 char *_strcpy(char *dest, char *src)
 {
 	int i;
@@ -9,6 +15,13 @@ char *_strcpy(char *dest, char *src)
 	dest[i] = '\0';
 	return (dest);
 }
+
+/**
+ * _strcat - concats source to destination buffer
+ * @dest: destination buffer
+ * @src: source to concat
+ * Return: dest ptr
+ */
 char *_strcat(char *dest, char *src)
 {
 	int i, j;
@@ -20,6 +33,13 @@ char *_strcat(char *dest, char *src)
 	dest[i + j] = '\0';
 	return (dest);
 }
+
+/**
+ * _strcmp - compares two strings
+ * @s1: 1st str to compare
+ * @s2: 2nd str to compare
+ * Return: difference bet s1 and s2 last char
+ */
 int _strcmp(char *s1, char *s2)
 {
 	int i;

@@ -4,9 +4,9 @@
  */
 char **parse_args(char *line, char *delim)
 {
-	size_t len = BUFF_SIZE, i = 0;
+	size_t i = 0;
 	char *token;
-	char **args = malloc(len * sizeof(char *));
+	char **args = malloc(BUFF_SIZE * sizeof(char *));
 
 	if (args == NULL || line == NULL)
 		exit(EXIT_FAILURE);
@@ -83,13 +83,12 @@ int main(void)
 					i++;
 				}
 			}
-				/* check path */	
 		}
 		else
 			wait(&status);
+		free(args);
 	}
 	free(path);
 	free(line);
-	free(args);
 	return (0);
 }

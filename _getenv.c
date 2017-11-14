@@ -1,5 +1,10 @@
 #include "header.h"
 
+/**
+ * get_index - gets index of env var in environ
+ * @name: env var key to search for
+ * Return: index
+ */
 int get_index(const char *name)
 {
 	int i, j;
@@ -21,6 +26,11 @@ int get_index(const char *name)
 	return (i);
 }
 
+/**
+ * _getenv - gets ptr to values of an env var
+ * @name: env var key to search for
+ * Return: ptr to value of the env var
+ */
 char *_getenv(const char *name)
 {
 	int index = get_index(name);
@@ -30,11 +40,4 @@ char *_getenv(const char *name)
 		i++;
 	i++;
 	return (&environ[index][i]);
-}
-
-int main(void)
-{
-	char *buffer = _getenv("PATH");
-	printf("%s\n", buffer);
-	return (0);
 }
