@@ -37,7 +37,6 @@ int check_slash(char *arg)
 	return (0);
 }
 
-
 int main(void)
 {
 	ssize_t bytes;
@@ -46,7 +45,7 @@ int main(void)
 	pid_t child_pid;
 	char *line = NULL, **args, **path, buffer_path[BUFF_SIZE];
 
-	path = parse_args(getenv("PATH"), ":");
+	path = parse_args(_getenv("PATH"), ":");
 	while (1)
 	{
 		_getprompt();
