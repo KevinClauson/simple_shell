@@ -74,7 +74,10 @@ int main(void)
 			if (check_slash(args[0]))
 			{
 				if (execve(args[0], args, NULL) == -1)
-					exit(98);
+				{
+					perror("ERROR");
+					exit(EXIT_FAILURE);
+				}
 			}
 			else
 			{
@@ -86,6 +89,11 @@ int main(void)
 					if (execve(buffer_path, args, NULL) != -1)
 						break;
 					i++;
+				}
+				if (path[i] == NULL)
+				{
+					perror("ERROR");
+					exit(EXIT_FAILURE);
 				}
 			}
 		}
