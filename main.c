@@ -114,6 +114,7 @@ void exec_fn(char **args, char **path)
 	else
 		wait(&status);
 }
+
 /**
  * main - shell program
  * Return: 0
@@ -128,6 +129,7 @@ int main(void)
 	path = parse_args(_getenv("PATH"), ":");
 	while (1)
 	{
+		signal(SIGINT, sig_handler);
 		_getprompt();
 		bytes = getline(&line, &n, stdin);
 		if (bytes == EOF)

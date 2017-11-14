@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
+#include <signal.h>
 
 /* global variables */
 extern char **environ;
@@ -33,5 +34,6 @@ int check_slash(char *arg);
 int _strcmp(char *s1, char *s2);
 int _strlen(char *s);
 int my_exit(char **args);
+void sig_handler(int signum);
 int print_env(char **args);
 #endif

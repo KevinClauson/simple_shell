@@ -62,3 +62,17 @@ int _strlen(char *s)
 		i++;
 	return (i);
 }
+
+/**
+ * sig_handler - tells SIGINT what to do
+ * @signum: signal number
+ */
+void sig_handler(int signum)
+{
+	if (signum == SIGINT) 
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		_getprompt();
+	}		
+}
+
