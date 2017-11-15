@@ -11,9 +11,8 @@
 
 /* global variables */
 extern char **environ;
-
 /* Macros */
-#define BUFF_SIZE 1024
+#define BUFF_SIZE 32 
 
 /* structs */
 typedef struct builtins
@@ -37,5 +36,6 @@ int my_exit(char **args);
 void sig_handler(int signum);
 int print_env(char **args);
 int _unsetenv(char **args);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 /* int _setenv(char **args);*/
 #endif

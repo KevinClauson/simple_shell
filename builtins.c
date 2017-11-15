@@ -60,7 +60,7 @@ int _unsetenv(char **args)
 	}
 	return (0);
 }
-
+/*
 int _setenv(char **args)
 {
 	char *buffer;
@@ -76,3 +76,4 @@ int _setenv(char **args)
 	}
 	return (0);
 }
+*/

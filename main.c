@@ -8,18 +8,25 @@
  */
 char **parse_args(char *line, char *delim)
 {
-	size_t i = 0;
+	size_t i = 0, len = BUFF_SIZE, new_size;
 	char *token;
-	char **args = malloc(BUFF_SIZE * sizeof(char *));
+	char **args = malloc(len * sizeof(char *));
 
 	if (args == NULL || line == NULL)
 		exit(EXIT_FAILURE);
 	token = my_strtok(line, delim);
-
 	while (token != NULL)
 	{
 		args[i] = token;
 		i++;
+		if (i >= len)
+		{
+			new_size = len * 2;
+			args = _realloc(args, len * sizeof(char *), new_size * sizeof(char *));
+			if (args == NULL)
+				exit(EXIT_FAILURE);
+			len = new_size;
+		}
 		token = my_strtok(NULL, delim);
 	}
 	args[i] = NULL;
@@ -80,7 +87,8 @@ void exec_fn(char **args, char **path)
 {
 	pid_t child_pid;
 	int i = 0, status;
-	char buffer_path[BUFF_SIZE];
+	size_t len = _strlen(args[0]) + 32, n;
+	char *buffer_path;
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -97,8 +105,17 @@ void exec_fn(char **args, char **path)
 		}
 		else
 		{
+			buffer_path = malloc(len * sizeof(char)); 
+			if (buffer_path == NULL)
+				exit(EXIT_FAILURE);
 			while (path[i])
 			{
+				if ((n = _strlen(path[i])) >= 31)
+				{
+					buffer_path = _realloc(buffer_path, len, n);
+					if (buffer_path == NULL)
+						exit(EXIT_FAILURE);
+				}
 				_strcpy(buffer_path, path[i]);
 				_strcat(buffer_path, "/");
 				_strcat(buffer_path, args[0]);
@@ -106,6 +123,7 @@ void exec_fn(char **args, char **path)
 					break;
 				i++;
 			}
+			free(buffer_path);
 			if (path[i] == NULL)
 			{
 				perror("ERROR");
@@ -125,7 +143,7 @@ int main(void)
 {
 	int test;
 	ssize_t bytes;
-	size_t n = 0;
+	size_t n = 0, i = 0;
 	char *line = NULL, **args, **path;
 
 	path = parse_args(_getenv("PATH"), ":");
@@ -136,6 +154,14 @@ int main(void)
 		bytes = getline(&line, &n, stdin);
 		if (bytes == EOF)
 			break;
+		for (i = 0; line[i]; i++)
+		{
+			if (line[i] == '#')
+			{
+				line[i] = '\0';
+				break;
+			}
+		}
 		args = parse_args(line, "\n \t");
 		test = check_builtin(args);
 		if (test == -1)
