@@ -69,10 +69,10 @@ int _strlen(char *s)
  */
 void sig_handler(int signum)
 {
-	if (signum == SIGINT) 
+	if (signum == SIGINT)
 	{
 		write(STDOUT_FILENO, "\n", 1);
 		_getprompt();
-	}		
+	}
 }
 

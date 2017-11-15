@@ -36,4 +36,6 @@ int _strlen(char *s);
 int my_exit(char **args);
 void sig_handler(int signum);
 int print_env(char **args);
+int _unsetenv(char **args);
+/* int _setenv(char **args);*/
 #endif

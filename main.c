@@ -55,6 +55,8 @@ int check_builtin(char **args)
 	builtin_t built_func[] = {
 		{"exit", my_exit},
 		{"env", print_env},
+		{"unsetenv", _unsetenv},
+		/* {"setenv", _setenv}, */
 		{NULL, NULL}
 	};
 
