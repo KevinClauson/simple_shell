@@ -28,7 +28,7 @@ char **parse_args(char *line, char *delim)
 
 /**
  * check_slash - checks if arg has slash char
- * @arg: ptr to strs of args
+ * @arg: ptr to an arg
  * Return: 1 if args has slash, 0 otherwise
  */
 int check_slash(char *arg)
