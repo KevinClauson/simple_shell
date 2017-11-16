@@ -12,20 +12,20 @@
 /* global variables */
 extern char **environ;
 /* Macros */
-#define BUFF_SIZE 32 
+#define BUFF_SIZE 32
 
 /* structs */
 typedef struct builtins
 {
 	char *str;
-	int (*f)(char **args);
+	int (*f)(char **args);/*, char **my_environ);*/
 } builtin_t;
 
 /* print prompt, getline and tokenize */
 void _getprompt(void);
 ssize_t _getline(char *buff);
 char *_strcpy(char *dest, char *src);
-char* my_strtok(char *src, char *delims);
+char *my_strtok(char *src, char *delims);
 char *_getenv(const char *name);
 int get_index(const char *name);
 char *_strcat(char *dest, char *src);
@@ -35,7 +35,10 @@ int _strlen(char *s);
 int my_exit(char **args);
 void sig_handler(int signum);
 int print_env(char **args);
-int _unsetenv(char **args);
+int my_cd(char **args);
+/*int _unsetenv(char **args, char **my_environ);*/
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+char **create_environ(void);
+void free_environ(char **my_environ);
 /* int _setenv(char **args);*/
 #endif
