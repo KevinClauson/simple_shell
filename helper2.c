@@ -26,3 +26,38 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 	free(ptr);
 	return (new);
 }
+
+char **create_environ(void)
+{
+	char **my_environ;
+	int i = 0, len1 = 0;
+
+	while (environ[len1])
+		len1++;
+	my_environ = malloc((len1 + 1) * sizeof(char *));
+	if (my_environ == NULL)
+		return (NULL);
+	for (i = 0; i < len1; i++)
+	{
+		my_environ[i] = malloc((_strlen(environ[i]) + 1) * sizeof(char));
+		if (my_environ[i] == NULL)
+		{
+			for ( ; i >= 0; i--)
+				free(my_environ[i]);
+			free(my_environ);
+			return (NULL);
+		}
+		my_environ[i] = _strcpy(my_environ[i], environ[i]);
+	}
+	my_environ[i] = NULL;
+	return (my_environ);
+}
+
+void free_environ(char **my_environ)
+{
+	int i;
+
+	for (i = 0; my_environ[i]; i++)
+		free(my_environ[i]);
+	free(my_environ);
+}

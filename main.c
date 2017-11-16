@@ -56,13 +56,14 @@ int check_slash(char *arg)
  * @args: ptr to str of args
  * Return: index of the cmd, or 0 if not found
  */
-int check_builtin(char **args)
+int check_builtin(char **args)/*, char **my_environ)*/
 {
 	int i = 0;
 	builtin_t built_func[] = {
 		{"exit", my_exit},
-		{"env", print_env},
-		{"unsetenv", _unsetenv},
+		{"cd", my_cd},
+	/*	{"env", print_env},*/
+	/*	{"unsetenv", _unsetenv},*/
 		/* {"setenv", _setenv}, */
 		{NULL, NULL}
 	};
@@ -70,9 +71,7 @@ int check_builtin(char **args)
 	while (built_func[i].str != NULL)
 	{
 		if (_strcmp(args[0], built_func[i].str) == 0)
-		{
-			return (built_func[i].f(args));
-		}
+			return (built_func[i].f(args));/*, my_environ));*/
 		i++;
 	}
 	return (-1);
@@ -105,7 +104,7 @@ void exec_fn(char **args, char **path)
 		}
 		else
 		{
-			buffer_path = malloc(len * sizeof(char)); 
+			buffer_path = malloc(len * sizeof(char));
 			if (buffer_path == NULL)
 				exit(EXIT_FAILURE);
 			while (path[i])
@@ -144,7 +143,9 @@ int main(void)
 	int test;
 	ssize_t bytes;
 	size_t n = 0, i = 0;
-	char *line = NULL, **args, **path;
+	char *line = NULL, **args, **path, **my_environ;
+
+	my_environ = create_environ();
 
 	path = parse_args(_getenv("PATH"), ":");
 	while (1)
@@ -163,11 +164,12 @@ int main(void)
 			}
 		}
 		args = parse_args(line, "\n \t");
-		test = check_builtin(args);
+		test = check_builtin(args);/*, my_environ);*/
 		if (test == -1)
 			exec_fn(args, path);
 		free(args);
 	}
+	free_environ(my_environ);
 	free(path);
 	free(line);
 	return (0);

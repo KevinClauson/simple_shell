@@ -24,6 +24,11 @@ int my_exit(char **args)
 	return (1);
 }
 
+/**
+ * print_env - prints environment
+ * @args: ptr to str of args
+ * Return: 0 on success, 1 otherwise
+ */
 int print_env(char **args)
 {
 	size_t i;
@@ -47,16 +52,33 @@ int print_env(char **args)
 	return (0);
 }
 
-int _unsetenv(char **args)
+int _unsetenv(char **args, char **my_environ)
 {
 	int i = get_index(args[1]);
 
 	if (i == -1)
 		return (-1);
-	while (environ[i])
+	free(my_environ[i]);
+	while (my_environ[i])
 	{
-		environ[i] = environ[i + 1];
+		my_environ[i] = my_environ[i + 1];
 		i++;
+	}
+	return (0);
+}
+/**
+ * my_cd - changes directory
+ * @args: ptr to str of args
+ * Return: 0 success, 2 on error
+ */
+int my_cd(char **args)
+{
+	if (args[1] == NULL)
+		return (chdir(_getenv("HOME")));
+	if (chdir(args[1]) == -1)
+	{
+		perror("cd");
+		return (2);
 	}
 	return (0);
 }
