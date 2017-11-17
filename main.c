@@ -1,9 +1,9 @@
 #include "header.h"
 
 /**
- * parse_args - parse args as strings, store in buffer
- * @line: user input
- * @delim: set delimiter
+ * parse_args - uses strtok to parse args and store in a buffer
+ * @line: user input from getline()
+ * @delim: set delimiter for tokenizer
  * Return: ptr to strings of args
  */
 char **parse_args(char *line, char *delim)
@@ -14,6 +14,7 @@ char **parse_args(char *line, char *delim)
 
 	if (args == NULL || line == NULL)
 		exit(EXIT_FAILURE);
+
 	token = strtok(line, delim);
 	while (token != NULL)
 	{
@@ -34,7 +35,7 @@ char **parse_args(char *line, char *delim)
 }
 
 /**
- * check_slash - checks if arg has slash char
+ * check_slash - checks if argument has a forward slash character
  * @arg: ptr to an arg
  * Return: 1 if args has slash, 0 otherwise
  */
@@ -52,11 +53,11 @@ int check_slash(char *arg)
 }
 
 /**
- * check_builtin - check if arg is builtin fn
+ * check_builtin - check if command is a built-in
  * @args: ptr to str of args
- * Return: index of the cmd, or 0 if not found
+ * Return: index of the cmd, or -1 if not found
  */
-int check_builtin(char **args)/*, char **my_environ)*/
+int check_builtin(char **args)
 {
 	int i = 0;
 	builtin_t built_func[] = {
@@ -71,14 +72,14 @@ int check_builtin(char **args)/*, char **my_environ)*/
 	while (built_func[i].str != NULL)
 	{
 		if (_strcmp(args[0], built_func[i].str) == 0)
-			return (built_func[i].f(args));/*, my_environ));*/
+			return (built_func[i].f(args));
 		i++;
 	}
 	return (-1);
 }
 
 /**
- * exec_fn - execs cmd in path, or exit if failure
+ * exec_fn - executes commands, searches PATH if no command location given
  * @args: parsed args buffer
  * @path: parsed buffer of path
  */
@@ -93,71 +94,70 @@ void exec_fn(char **args, char **path)
 		if (execve(args[0], args, NULL) == -1)
 		{
 			perror("execve");
-			exit(EXIT_FAILURE);
+			_exit(1);
 		}
 	}
 	else
 	{
 		buffer_path = malloc(len * sizeof(char));
 		if (buffer_path == NULL)
-			exit(EXIT_FAILURE);
-		while (path[i])
+			_exit(1);
+		/* this loop checks user's cmd against PATH dirs, executes cmd if found */
+		for ( ; path[i]; i++)
 		{
 			if ((_strlen(path[i])) >= path_space)
 			{
 				buffer_path = _realloc(buffer_path, len, _strlen(path[i]));
 				if (buffer_path == NULL)
-					exit(EXIT_FAILURE);
+					_exit(1);
 			}
 			_strcpy(buffer_path, path[i]);
 			_strcat(buffer_path, "/");
 			_strcat(buffer_path, args[0]);
 			if (execve(buffer_path, args, NULL) != -1)
 				break;
-			i++;
+		/*************************************************************************/
 		}
 		free(buffer_path);
 		if (path[i] == NULL)
 		{
 			perror("path");
-			exit(EXIT_FAILURE);
+			_exit(1);
 		}
 	}
 }
 
 /**
- * main - shell program
+ * main - shell: prompts user for input, tries to interpret input as commands
  * Return: 0
  */
 int main(void)
 {
-	int test, status;
+	int is_builtin, status;
 	pid_t child_pid;
 	ssize_t bytes;
-	size_t n = 0, i = 0;
+	size_t n = 0;
 	char *line = NULL, **args, **path, **my_env = create_env(), *path_val = NULL;
 
 	environ = my_env;
 	while (1)
 	{
-		signal(SIGINT, sig_handler);
-		_getprompt();
-		bytes = getline(&line, &n, stdin);
+		signal(SIGINT, sig_handler);	/* handler: ^C prompts instead of terminate  */
+		_getprompt();	/* prints shell prompt */
+		bytes = getline(&line, &n, stdin);	/* read user's keyboard input */
 		if (bytes == EOF)
 			break;
-		for (i = 0; line[i]; i++)
-		{
-			if (line[i] == '#')
-			{
-				line[i] = '\0';
-				break;
-			}
-		}
+		check_comment(&line);	/* looks for '#' so comments ignored in cmd line */
 		args = parse_args(line, "\n \t");
+
+		/* functions to copy PATH and parse so exec_fn can check PATH directories */
 		path_val = copy_path();
 		path = parse_args(path_val, ":\n");
-		test = check_builtin(args);
-		if (test == -1)
+		/**************************************************************************/
+
+		is_builtin = check_builtin(args);
+		/* if cmd not built-in, create child process and check PATH for valid cmd */
+		if (is_builtin == -1)
 		{
 			child_pid = fork();
 			if (child_pid == -1)

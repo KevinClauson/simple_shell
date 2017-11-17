@@ -3,7 +3,7 @@
 /**
  * my_exit - exits shell
  * @args: ptr to str of args
- * Return: -1 if args[0] NULL, exits 0 otherwise
+ * Return: 1 if exit receives invalid arg
  */
 int my_exit(char **args)
 {
@@ -25,7 +25,7 @@ int my_exit(char **args)
 }
 
 /**
- * print_env - prints environment
+ * print_env - prints environment key-value pairs
  * @args: ptr to str of args
  * Return: 0 on success, 1 otherwise
  */
@@ -51,7 +51,11 @@ int print_env(char **args)
 	}
 	return (0);
 }
-
+/**
+ * _unsetenv - removes a var from user environment
+ * @args: ptr to ptr to args
+ * Return: -1 if var not found, 0 on success
+ */
 int _unsetenv(char **args)
 {
 	int i = get_index(args[1]);
@@ -82,7 +86,11 @@ int my_cd(char **args)
 	}
 	return (0);
 }
-
+/**
+ * _setenv - sets new environ var, or updates existing
+ * @args: ptr to ptr to args
+ * Return: 0
+ */
 int _setenv(char **args)
 {
 	char *buffer;
@@ -105,14 +113,15 @@ int _setenv(char **args)
 			free(environ[i]);
 			environ[i] = buffer;
 		}
-		/*
+	/*
 		else
 		{
-			environ = _realloc(environ, len1, len1 + 1);
-			environ[len1] = buffer;
-			environ[len1 + 1] = NULL;
+			free(environ[len1]);
+			environ = _realloc(environ, len1 * 8, (len1 + 2) * 8);
+			environ[len1 + 1] = buffer;
+			environ[len1 + 2] = NULL;
 		}
-		*/
+	*/
 	}
 	return (0);
 }

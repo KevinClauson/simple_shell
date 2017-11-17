@@ -14,11 +14,15 @@ extern char **environ;
 /* Macros */
 #define BUFF_SIZE 32
 
-/* structs */
+/**
+ * struct builtins - struct for built-in commands
+ * @str: command
+ * @f: function pointer to respective command
+ */
 typedef struct builtins
 {
 	char *str;
-	int (*f)(char **args);/*, char **my_environ);*/
+	int (*f)(char **args);
 } builtin_t;
 
 /* print prompt, getline and tokenize */
@@ -42,4 +46,5 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 char **create_env(void);
 void free_env(char **my_environ);
 int _setenv(char **args);
+void check_comment(char **line);
 #endif

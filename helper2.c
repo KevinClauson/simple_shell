@@ -27,6 +27,10 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 	return (new);
 }
 
+/**
+ * create_env - copies environ (extern var) to my_environ
+ * Return: copy of environ
+ */
 char **create_env(void)
 {
 	char **my_environ;
@@ -52,7 +56,10 @@ char **create_env(void)
 	my_environ[i] = NULL;
 	return (my_environ);
 }
-
+/**
+ * free_env - frees environ copy
+ * @my_environ: copy of extern environ var
+ */
 void free_env(char **my_environ)
 {
 	int i;
@@ -62,6 +69,10 @@ void free_env(char **my_environ)
 	free(my_environ);
 }
 
+/**
+ * copy_path - copies PATH values to buffer
+ * Return: ptr to copy of PATH values
+ */
 char *copy_path(void)
 {
 	char *path_val;
@@ -71,4 +82,22 @@ char *copy_path(void)
 		return (NULL);
 	path_val = _strcpy(path_val, _getenv("PATH"));
 	return (path_val);
+}
+
+/**
+ * check_comment - checks user input for '#' symbol
+ * @line: ptr to address of user input string
+ */
+void check_comment(char **line)
+{
+	int i;
+
+	for (i = 0; (*line)[i]; i++)
+	{
+		if ((*line)[i] == '#')
+		{
+			(*line)[i] = '\0';
+			break;
+		}
+	}
 }
