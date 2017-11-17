@@ -14,7 +14,7 @@ char **parse_args(char *line, char *delim)
 
 	if (args == NULL || line == NULL)
 		exit(EXIT_FAILURE);
-	token = my_strtok(line, delim);
+	token = strtok(line, delim);
 	while (token != NULL)
 	{
 		args[i] = token;
@@ -27,7 +27,7 @@ char **parse_args(char *line, char *delim)
 				exit(EXIT_FAILURE);
 			len = new_size;
 		}
-		token = my_strtok(NULL, delim);
+		token = strtok(NULL, delim);
 	}
 	args[i] = NULL;
 	return (args);
@@ -62,9 +62,9 @@ int check_builtin(char **args)/*, char **my_environ)*/
 	builtin_t built_func[] = {
 		{"exit", my_exit},
 		{"cd", my_cd},
-	/*	{"env", print_env},*/
-	/*	{"unsetenv", _unsetenv},*/
-		/* {"setenv", _setenv}, */
+		{"env", print_env},
+		{"unsetenv", _unsetenv},
+		{"setenv", _setenv},
 		{NULL, NULL}
 	};
 
@@ -84,54 +84,45 @@ int check_builtin(char **args)/*, char **my_environ)*/
  */
 void exec_fn(char **args, char **path)
 {
-	pid_t child_pid;
-	int i = 0, status;
-	size_t len = _strlen(args[0]) + 32, n;
+	int i = 0;
+	size_t path_space = 31, len = _strlen(args[0]) + path_space + 1;
 	char *buffer_path;
 
-	child_pid = fork();
-	if (child_pid == -1)
-		perror("ERROR");
-	if (child_pid == 0)
+	if (check_slash(args[0]))
 	{
-		if (check_slash(args[0]))
+		if (execve(args[0], args, NULL) == -1)
 		{
-			if (execve(args[0], args, NULL) == -1)
-			{
-				perror("ERROR");
-				exit(EXIT_FAILURE);
-			}
-		}
-		else
-		{
-			buffer_path = malloc(len * sizeof(char));
-			if (buffer_path == NULL)
-				exit(EXIT_FAILURE);
-			while (path[i])
-			{
-				if ((n = _strlen(path[i])) >= 31)
-				{
-					buffer_path = _realloc(buffer_path, len, n);
-					if (buffer_path == NULL)
-						exit(EXIT_FAILURE);
-				}
-				_strcpy(buffer_path, path[i]);
-				_strcat(buffer_path, "/");
-				_strcat(buffer_path, args[0]);
-				if (execve(buffer_path, args, NULL) != -1)
-					break;
-				i++;
-			}
-			free(buffer_path);
-			if (path[i] == NULL)
-			{
-				perror("ERROR");
-				exit(EXIT_FAILURE);
-			}
+			perror("execve");
+			exit(EXIT_FAILURE);
 		}
 	}
 	else
-		wait(&status);
+	{
+		buffer_path = malloc(len * sizeof(char));
+		if (buffer_path == NULL)
+			exit(EXIT_FAILURE);
+		while (path[i])
+		{
+			if ((_strlen(path[i])) >= path_space)
+			{
+				buffer_path = _realloc(buffer_path, len, _strlen(path[i]));
+				if (buffer_path == NULL)
+					exit(EXIT_FAILURE);
+			}
+			_strcpy(buffer_path, path[i]);
+			_strcat(buffer_path, "/");
+			_strcat(buffer_path, args[0]);
+			if (execve(buffer_path, args, NULL) != -1)
+				break;
+			i++;
+		}
+		free(buffer_path);
+		if (path[i] == NULL)
+		{
+			perror("path");
+			exit(EXIT_FAILURE);
+		}
+	}
 }
 
 /**
@@ -140,14 +131,13 @@ void exec_fn(char **args, char **path)
  */
 int main(void)
 {
-	int test;
+	int test, status;
+	pid_t child_pid;
 	ssize_t bytes;
 	size_t n = 0, i = 0;
-	char *line = NULL, **args, **path, **my_environ;
+	char *line = NULL, **args, **path, **my_env = create_env(), *path_val = NULL;
 
-	my_environ = create_environ();
-
-	path = parse_args(_getenv("PATH"), ":");
+	environ = my_env;
 	while (1)
 	{
 		signal(SIGINT, sig_handler);
@@ -164,13 +154,21 @@ int main(void)
 			}
 		}
 		args = parse_args(line, "\n \t");
-		test = check_builtin(args);/*, my_environ);*/
+		path_val = copy_path();
+		path = parse_args(path_val, ":\n");
+		test = check_builtin(args);
 		if (test == -1)
-			exec_fn(args, path);
-		free(args);
+		{
+			child_pid = fork();
+			if (child_pid == -1)
+				perror("fork");
+			if (child_pid == 0)
+				exec_fn(args, path);
+			else
+				wait(&status);
+		}
+		free(args), free(path_val), free(path);
 	}
-	free_environ(my_environ);
-	free(path);
-	free(line);
+	free(line), free_env(my_env);
 	return (0);
 }

@@ -52,16 +52,16 @@ int print_env(char **args)
 	return (0);
 }
 
-int _unsetenv(char **args, char **my_environ)
+int _unsetenv(char **args)
 {
 	int i = get_index(args[1]);
 
 	if (i == -1)
 		return (-1);
-	free(my_environ[i]);
-	while (my_environ[i])
+	free(environ[i]);
+	while (environ[i])
 	{
-		my_environ[i] = my_environ[i + 1];
+		environ[i] = environ[i + 1];
 		i++;
 	}
 	return (0);
@@ -82,20 +82,38 @@ int my_cd(char **args)
 	}
 	return (0);
 }
-/*
+
 int _setenv(char **args)
 {
 	char *buffer;
 	int i = get_index(args[1]);
+	size_t len1 = 0;
 
-	if (i >= 0 && args[3])
+
+	while (environ[len1])
+		len1++;
+	if (args[2])
 	{
 		buffer = malloc((_strlen(args[1]) + _strlen(args[2]) + 2));
+		if (buffer == NULL)
+			return (-1);
 		_strcpy(buffer, args[1]);
 		_strcat(buffer, "=");
 		_strcat(buffer, args[2]);
-		printf("%s\n", buffer);
+		if (i >= 0)
+		{
+			free(environ[i]);
+			environ[i] = buffer;
+		}
+		/*
+		else
+		{
+			environ = _realloc(environ, len1, len1 + 1);
+			environ[len1] = buffer;
+			environ[len1 + 1] = NULL;
+		}
+		*/
 	}
 	return (0);
 }
-*/
+

@@ -2,11 +2,8 @@
 
 int isInString(char a, char *lst)
 {
-	while (*lst)
-	{
-		if (a == *lst++)
-			return (1);
-	}
+	if (a == *lst)
+		return (1);
 	return (0);
 }
 

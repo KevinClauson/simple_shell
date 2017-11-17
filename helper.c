@@ -54,9 +54,9 @@ int _strcmp(char *s1, char *s2)
  * @s: input ptr to a char
  * Return: length of string
  */
-int _strlen(char *s)
+size_t _strlen(char *s)
 {
-	int i = 0;
+	size_t i = 0;
 
 	while (s[i])
 		i++;

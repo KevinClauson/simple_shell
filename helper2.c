@@ -27,7 +27,7 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 	return (new);
 }
 
-char **create_environ(void)
+char **create_env(void)
 {
 	char **my_environ;
 	int i = 0, len1 = 0;
@@ -53,11 +53,22 @@ char **create_environ(void)
 	return (my_environ);
 }
 
-void free_environ(char **my_environ)
+void free_env(char **my_environ)
 {
 	int i;
 
 	for (i = 0; my_environ[i]; i++)
 		free(my_environ[i]);
 	free(my_environ);
+}
+
+char *copy_path(void)
+{
+	char *path_val;
+
+	path_val = malloc(_strlen(_getenv("PATH")) * 2);
+	if (path_val == NULL)
+		return (NULL);
+	path_val = _strcpy(path_val, _getenv("PATH"));
+	return (path_val);
 }

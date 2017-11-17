@@ -25,20 +25,21 @@ typedef struct builtins
 void _getprompt(void);
 ssize_t _getline(char *buff);
 char *_strcpy(char *dest, char *src);
-char *my_strtok(char *src, char *delims);
+/*char *my_strtok(char *src, char *delims);*/
 char *_getenv(const char *name);
 int get_index(const char *name);
 char *_strcat(char *dest, char *src);
 int check_slash(char *arg);
 int _strcmp(char *s1, char *s2);
-int _strlen(char *s);
+size_t _strlen(char *s);
 int my_exit(char **args);
+char *copy_path(void);
 void sig_handler(int signum);
 int print_env(char **args);
 int my_cd(char **args);
-/*int _unsetenv(char **args, char **my_environ);*/
+int _unsetenv(char **args);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-char **create_environ(void);
-void free_environ(char **my_environ);
-/* int _setenv(char **args);*/
+char **create_env(void);
+void free_env(char **my_environ);
+int _setenv(char **args);
 #endif
