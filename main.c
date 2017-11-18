@@ -125,7 +125,7 @@ void exec_cmd(char **args, char **path, char *prgm, int count)
 		free(buffer_path);
 		if (path[i] == NULL)
 		{
-			fprintf(stderr, "%s: %d: %s: not found\n", prgm, count, args[0]);
+			print_error("%s: %d: %s: not found\n", prgm, count, args[0]);
 			_exit(1);
 		}
 	}
