@@ -3,13 +3,16 @@
 /**
  * my_exit - exits shell
  * @args: ptr to str of args
+ * @prgm: prgm name for print error
+ * @count: count user input for print error
  * Return: 1 if exit receives invalid arg
  */
-int my_exit(char **args)
+int my_exit(char **args, char *prgm, int count)
 {
 	int num = 0, i = 0;
+	(void) prgm, (void) count;
 
-	if (args[1] == NULL)
+	if (args == NULL || args[1] == NULL)
 		exit(0);
 	while (args[1][i])
 	{
@@ -27,15 +30,18 @@ int my_exit(char **args)
 /**
  * print_env - prints environment key-value pairs
  * @args: ptr to str of args
+ * @prgm: prgm name for print error
+ * @count: count user input for print error
  * Return: 0 on success, 1 otherwise
  */
-int print_env(char **args)
+int print_env(char **args, char *prgm, int count)
 {
 	size_t i;
 	char **env_aux;
 	char *cnt;
+	(void) prgm, (void) count;
 
-	if (args[0] == NULL)
+	if (args == NULL || args[0] == NULL)
 		return (1);
 	for (env_aux = environ; *env_aux != NULL; env_aux++)
 	{
@@ -54,14 +60,20 @@ int print_env(char **args)
 /**
  * _unsetenv - removes a var from user environment
  * @args: ptr to ptr to args
+ * @prgm: prgm name for print error
+ * @count: count user input for print error
  * Return: -1 if var not found, 0 on success
  */
-int _unsetenv(char **args)
+int _unsetenv(char **args, char *prgm, int count)
 {
 	int i = get_index(args[1]);
+	(void) prgm, (void) count;
 
-	if (i == -1)
+	if (args == NULL || args[1] == NULL || i == -1 || !_strlen(args[1]))
+	{
+		write(2, "ERROR: check arg\n", 17);
 		return (-1);
+	}
 	free(environ[i]);
 	while (environ[i])
 	{
@@ -73,15 +85,17 @@ int _unsetenv(char **args)
 /**
  * my_cd - changes directory
  * @args: ptr to str of args
+ * @prgm: prgm name for print error
+ * @count: count user input for print error
  * Return: 0 success, 2 on error
  */
-int my_cd(char **args)
+int my_cd(char **args, char *prgm, int count)
 {
 	if (args[1] == NULL)
 		return (chdir(_getenv("HOME")));
 	if (chdir(args[1]) == -1)
 	{
-		perror("cd");
+		print_error("%s: %d: cd: can't cd to %s\n", prgm, count, args[1]);
 		return (2);
 	}
 	return (0);
@@ -89,15 +103,22 @@ int my_cd(char **args)
 /**
  * _setenv - sets new environ var, or updates existing
  * @args: ptr to ptr to args
+ * @prgm: prgm name for print error
+ * @count: count user input for print error
  * Return: 0
  */
-int _setenv(char **args)
+int _setenv(char **args, char *prgm, int count)
 {
 	char *buffer;
 	int i = get_index(args[1]);
 	size_t len1 = 0;
+	(void) prgm, (void) count;
 
-
+	if (args == NULL || args[1] == NULL || !_strlen(args[1]))
+	{
+		write(2, "ERROR: check arg\n", 17);
+		return (-1);
+	}
 	while (environ[len1])
 		len1++;
 	if (args[2])
