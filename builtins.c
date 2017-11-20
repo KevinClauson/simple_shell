@@ -71,7 +71,7 @@ int _unsetenv(char **args, char *prgm, int count)
 
 	if (args == NULL || args[1] == NULL || i == -1 || !_strlen(args[1]))
 	{
-		print_error("Error: invalid argument\n");
+		print_error("Unsetenv: too few arguments\n");
 		return (-1);
 	}
 	free(environ[i]);
