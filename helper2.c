@@ -60,13 +60,13 @@ char **create_env(void)
  * free_env - frees environ copy
  * @my_environ: copy of extern environ var
  */
-void free_env(char **my_environ)
+void free_env(void)
 {
 	int i;
 
-	for (i = 0; my_environ[i]; i++)
-		free(my_environ[i]);
-	free(my_environ);
+	for (i = 0; environ[i]; i++)
+		free(environ[i]);
+	free(environ);
 }
 
 /**

@@ -176,6 +176,6 @@ int main(int __attribute__((unused)) argc, char *argv[])
 		}
 		free(args), free(path_val), free(path);
 	}
-	free(line), free_env(my_env);
+	free(line), free_env();
 	return (0);
 }

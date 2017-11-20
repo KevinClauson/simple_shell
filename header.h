@@ -56,7 +56,7 @@ int my_cd(char **args, char *prgm, int count);
 int _unsetenv(char **args, char *prgm, int count);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 char **create_env(void);
-void free_env(char **my_environ);
+void free_env(void);
 int _setenv(char **args, char *prgm, int count);
 void check_comment(char **line);
 int print_str(va_list ap);

@@ -71,7 +71,7 @@ int _unsetenv(char **args, char *prgm, int count)
 
 	if (args == NULL || args[1] == NULL || i == -1 || !_strlen(args[1]))
 	{
-		write(2, "ERROR: check arg\n", 17);
+		print_error("Error: invalid argument\n");
 		return (-1);
 	}
 	free(environ[i]);
@@ -110,15 +110,17 @@ int my_cd(char **args, char *prgm, int count)
 int _setenv(char **args, char *prgm, int count)
 {
 	char *buffer;
-	int i = get_index(args[1]);
+	int i = get_index(args[1]), n = sizeof(char *);
 	size_t len1 = 0;
 	(void) prgm, (void) count;
 
-	if (args == NULL || args[1] == NULL || !_strlen(args[1]))
+	if (!args ||!args[1] || !args[2] || !args[3])
 	{
-		write(2, "ERROR: check arg\n", 17);
+		print_error("Error: invalid argument\n");
 		return (-1);
 	}
+	if (_strcmp(args[3], "0") == 0)
+		return (0);
 	while (environ[len1])
 		len1++;
 	if (args[2])
@@ -134,15 +136,13 @@ int _setenv(char **args, char *prgm, int count)
 			free(environ[i]);
 			environ[i] = buffer;
 		}
-	/*
 		else
 		{
 			free(environ[len1]);
-			environ = _realloc(environ, len1 * 8, (len1 + 2) * 8);
-			environ[len1 + 1] = buffer;
-			environ[len1 + 2] = NULL;
+			environ = _realloc(environ, (len1 + 1) * n, (len1 + 2) * n);
+			environ[len1] = buffer;
+			environ[len1 + 1] = NULL;
 		}
-	*/
 	}
 	return (0);
 }
