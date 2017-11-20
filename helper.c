@@ -58,6 +58,8 @@ size_t _strlen(char *s)
 {
 	size_t i = 0;
 
+	if (s == NULL)
+		return (0);
 	while (s[i])
 		i++;
 	return (i);

@@ -114,7 +114,7 @@ int _setenv(char **args, char *prgm, int count)
 	size_t len1 = 0;
 	(void) prgm, (void) count;
 
-	if (args[3])
+	if (args[1] && args[2] && args[3])
 	{
 		print_error("setenv: Too many arguments\n");
 		return (-1);
@@ -123,26 +123,24 @@ int _setenv(char **args, char *prgm, int count)
 		return (print_env(args, prgm, count));
 	while (environ[len1])
 		len1++;
+	buffer = malloc((_strlen(args[1]) + _strlen(args[2]) + 2));
+	if (buffer == NULL)
+		return (-1);
+	_strcpy(buffer, args[1]);
+	_strcat(buffer, "=");
 	if (args[2])
-	{
-		buffer = malloc((_strlen(args[1]) + _strlen(args[2]) + 2));
-		if (buffer == NULL)
-			return (-1);
-		_strcpy(buffer, args[1]);
-		_strcat(buffer, "=");
 		_strcat(buffer, args[2]);
-		if (i >= 0)
-		{
-			free(environ[i]);
-			environ[i] = buffer;
-		}
-		else
-		{
-			free(environ[len1]);
-			environ = _realloc(environ, (len1 + 1) * n, (len1 + 2) * n);
-			environ[len1] = buffer;
-			environ[len1 + 1] = NULL;
-		}
+	if (i >= 0)
+	{
+		free(environ[i]);
+		environ[i] = buffer;
+	}
+	else
+	{
+		free(environ[len1]);
+		environ = _realloc(environ, (len1 + 1) * n, (len1 + 2) * n);
+		environ[len1] = buffer;
+		environ[len1 + 1] = NULL;
 	}
 	return (0);
 }
