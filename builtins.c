@@ -114,13 +114,13 @@ int _setenv(char **args, char *prgm, int count)
 	size_t len1 = 0;
 	(void) prgm, (void) count;
 
-	if (!args ||!args[1] || !args[2] || !args[3])
+	if (args[3])
 	{
-		print_error("Error: invalid argument\n");
+		print_error("setenv: Too many arguments\n");
 		return (-1);
 	}
-	if (_strcmp(args[3], "0") == 0)
-		return (0);
+	if (args[1] == NULL)
+		return (print_env(args, prgm, count));
 	while (environ[len1])
 		len1++;
 	if (args[2])
