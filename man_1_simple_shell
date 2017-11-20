@@ -1,0 +1,141 @@
+.TH SIMPLE_SHELL 1 "19 November 2017" "GNU" "Linux Programmer's Manual"
+.SH NAME
+simple_shell \- a shell created for educational purposes containing some of the functionality of GNU Bourne-Again SHell 
+.SH SYNOPSIS
+.B #include "header.h"
+.LP
+.B simple_shell
+.I [options] [command_string | file]
+.SH COPYRIGHT
+There is no copyright.  Simple_shell was created as an education exercise.  Feel free to use any part of it, but we would highly suggest that you spend the time building your shell from the ground up and using the simple_shell as a reference for ideas or to compare once you have basic funcionality working in your shell.
+.SH DESCRIPTION
+.B Simple_shell
+is a UNIX command language interpreter that executes commands read from standard input or from a file.
+.B Simple_shell
+will display a prompt showing your current directory and wait for the user to type a command.  
+.SH ARGUMENTS
+The simple_shell will first examine the first command given in standard input to see if it is contained in builtin function.  If not the shell searches the directories in 
+.B PATH
+for the the script and if it finds it then the command is executed.
+.SH SIMPLE_SHELL GRAMMAR
+The first word specifies the command to be exectued and the remaining commands are passed as arguments to that command.  Pipeline functionality has not been included in this shell.  
+.SH RETURN VALUE
+Unless specified otherwise,
+.B simple_shell
+has the exact same output as sh (/bin/sh) as well as the exact same error output.
+.SH
+BUILT-IN COMMANDS
+The following built-in commands are available
+.B simple_shell
+:
+.LP
+.B exit
+.RS 5
+Typing in
+.B exit
+will end your
+.B simple_shell
+session.  If you include an integer with the command, such as:
+.B exit
+.I 98
+the command will exit with the return status set to 98.
+.RE
+.LP
+.B env
+.RS 5
+prints the current environmental variables.
+.RE
+.LP
+.B setenv
+.RS 5
+The
+.B setenv
+command will initialise a new environment variable, or modify an existing one.  The command syntax:
+.B sentenv
+.I VARIABLE VAlUE
+.
+If the command fails or the parameters are not valid an error is printed to standard error.
+.RE
+.LP
+.B unsetenv
+.RS 5
+The
+.B unsetenv
+command will remove a environement variable. The command syntax:
+.B unsetenv
+.I VARIABLE
+.
+If the command fails or the parameters are not valid an error message it printed to standard error.
+.RE
+.LP
+.B cd
+.RS 5
+The
+.B cd
+command will allow you to change the current directory of the process.  Command syntax: 
+.B cd
+.I [DIRECTORY]
+.
+If no argument is given to
+.B cd
+the command will be interprted like
+.B cd
+.I $HOME
+and will change the direcory to the home directory.  The command
+.B cd
+.I -
+will also bring you to the home directory.
+.RE
+.LP
+.SH COMMENT HANDLING
+For comments that begin with the
+.I #
+character, the simple_shell will disregard the
+.I #
+char as well as all chars that come after it.
+.RE
+.LP
+.SH BUGS
+No known bugs at this time.
+.LP
+.SH EXAMPLE
+The following examples require the inclusion of the
+.B "header.h"
+header file written as: #include "header.h"
+.LP
+.RS 5
+To list all files in the current working directory in long format and include hidden files:
+.LP
+.RS 6
+ls -la
+.RE
+.LP
+To print "hello world" to standard output.
+.LP
+.RS 6
+echo hello world
+.RE
+.LP
+To change the environment variable
+.I USER
+:
+.LP
+.RS 6
+setenv USER
+.I NAME
+.RE
+.LP
+To eliminate the environmental variable
+.I USER
+:
+.LP
+.RS 6
+unsetenv USER
+.RE
+
+.SH
+SEE ALSO
+.B shell
+.SH
+Authors
+Lance Wong and Kevin Clauson
