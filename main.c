@@ -15,7 +15,7 @@ char **parse_args(char *line, char *delim)
 	if (args == NULL || line == NULL)
 		exit(EXIT_FAILURE);
 
-	token = strtok(line, delim);
+	token = my_strtok(line, delim);
 	while (token != NULL)
 	{
 		args[i] = token;
@@ -28,7 +28,7 @@ char **parse_args(char *line, char *delim)
 				exit(EXIT_FAILURE);
 			len = new_size;
 		}
-		token = strtok(NULL, delim);
+		token = my_strtok(NULL, delim);
 	}
 	args[i] = NULL;
 	return (args);
@@ -120,8 +120,8 @@ void exec_cmd(char **args, char **path, char *prgm, int count)
 			_strcat(buffer_path, args[0]);
 			if (execve(buffer_path, args, NULL) != -1)
 				break;
-		/*************************************************************************/
 		}
+		/*************************************************************************/
 		free(buffer_path);
 		if (path[i] == NULL)
 		{

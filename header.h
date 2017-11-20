@@ -41,7 +41,7 @@ typedef struct func_e
 void _getprompt(void);
 /* ssize_t _getline(char *buff); */
 char *_strcpy(char *dest, char *src);
-/*char *my_strtok(char *src, char *delims);*/
+char *my_strtok(char *src, char *delims);
 char *_getenv(const char *name);
 int get_index(const char *name);
 char *_strcat(char *dest, char *src);
