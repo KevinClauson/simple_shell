@@ -1,44 +1,45 @@
 #include "header.h"
 
-int isInString(char a, char *lst)
+char *_strchr(char *delim, int c)
 {
-	while(*lst)
+	while(*delim != '\0')
 	{
-		if (a == *lst++)
-			return (1);
+		if(*delim == c)
+			return (delim);
+		delim++;
 	}
-	return (0);
+	return (NULL);
+
 }
 
-char *my_strtok(char *src, char *delims)
+size_t _strcspn(const char *str1, const char *str2)
 {
-	static char *s_src = NULL;
-	char *start, *end;
+	size_t i, j;
 
-	if (src)
-		s_src = src;
-
-	start = s_src;
-	end = s_src;
-
-	if (*start == '\0')
-		return (NULL);
-	while (isInString(*(end), delims))
+	for (i = 0; str1[i] != '\0'; ++i)
 	{
-		end++;
-		start++;
+		for (j = 0; str2[j] != '\0'; ++j)
+		{
+			if (str1[i] == str2[j])
+				return (i);
+		}
 	}
-	while (*end)
-	{
-		if (isInString(*end, delims))
-			break;
-		end++;
-	}
-	*end = '\0';
-	while (isInString(*(end + 1), delims))
-		end++;
+	return (i);
+}
 
-	s_src = end + 1;
+char *my_strtok(char *s, char *delim) {
+	static char *lasts;
+	int ch;
 
-	return (start);
+	if (s == 0)
+		s = lasts;
+	do {
+		if ((ch = *s++) == '\0')
+			return 0;
+	} while (_strchr(delim, ch));
+	--s;
+	lasts = s + _strcspn(s, delim);
+	if (*lasts != 0)
+		*lasts++ = 0;
+	return s;
 }
