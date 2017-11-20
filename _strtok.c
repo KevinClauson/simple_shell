@@ -1,10 +1,16 @@
 #include "header.h"
 
+/**
+ * _strchr - locate char in string
+ * @delim: string
+ * @c: byte to search for
+ * Return: ptr delim, or NULL
+ */
 char *_strchr(char *delim, int c)
 {
-	while(*delim != '\0')
+	while (*delim != '\0')
 	{
-		if(*delim == c)
+		if (*delim == c)
 			return (delim);
 		delim++;
 	}
@@ -12,6 +18,12 @@ char *_strchr(char *delim, int c)
 
 }
 
+/**
+ * _strcspn - search a string for a set of bytes
+ * @str1: string to search
+ * @str2: string to reject in search
+ * Return: number of bytes in init segment not in reject
+ */
 size_t _strcspn(const char *str1, const char *str2)
 {
 	size_t i, j;
@@ -27,7 +39,14 @@ size_t _strcspn(const char *str1, const char *str2)
 	return (i);
 }
 
-char *my_strtok(char *s, char *delim) {
+/**
+ * my_strtok - extract tokens from strings
+ * @s: string to parse
+ * @delim: delimiter
+ * Return: ptr to next token, NULL if no more tokens
+ */
+char *my_strtok(char *s, char *delim)
+{
 	static char *lasts;
 	int ch;
 
@@ -35,11 +54,11 @@ char *my_strtok(char *s, char *delim) {
 		s = lasts;
 	do {
 		if ((ch = *s++) == '\0')
-			return 0;
+			return (0);
 	} while (_strchr(delim, ch));
 	--s;
 	lasts = s + _strcspn(s, delim);
 	if (*lasts != 0)
 		*lasts++ = 0;
-	return s;
+	return (s);
 }
