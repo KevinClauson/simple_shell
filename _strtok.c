@@ -2,8 +2,11 @@
 
 int isInString(char a, char *lst)
 {
-	if (a == *lst)
-		return (1);
+	while(*lst)
+	{
+		if (a == *lst++)
+			return (1);
+	}
 	return (0);
 }
 
@@ -20,12 +23,12 @@ char *my_strtok(char *src, char *delims)
 
 	if (*start == '\0')
 		return (NULL);
-	while (isInString(*end, delims))
+	while (isInString(*(end), delims))
 	{
 		end++;
 		start++;
 	}
-	while (*end != '\0' && *end != '\n')
+	while (*end)
 	{
 		if (isInString(*end, delims))
 			break;
