@@ -53,8 +53,11 @@ char *my_strtok(char *s, char *delim)
 	if (s == 0)
 		s = lasts;
 	do {
-		if ((ch = *s++) == '\0')
+		ch = *s++;
+		if (ch  == '\0')
+		{
 			return (0);
+		}
 	} while (_strchr(delim, ch));
 	--s;
 	lasts = s + _strcspn(s, delim);
