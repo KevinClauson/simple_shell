@@ -99,7 +99,7 @@ int my_cd(char **args, char *prgm, int count)
 	else if (_strcmp(args[1], "-") == 0)
 	{
 		chdir(_getenv("OLDPWD"));
-		change_oldpwd(prgm, count);	
+		change_oldpwd(prgm, count);
 	}
 	else
 	{
