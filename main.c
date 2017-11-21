@@ -159,6 +159,8 @@ int main(int __attribute__((unused)) argc, char *argv[])
 		bytes = getline(&line, &n, stdin);	/* read user's keyboard input */
 		if (bytes == EOF)
 			break;
+		if (line[0] == '#')
+			continue;
 		check_comment(&line);	/* looks for '#' so comments ignored in input */
 		args = parse_args(line, "\n \t");
 
