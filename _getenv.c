@@ -41,3 +41,41 @@ char *_getenv(const char *name)
 	i++;
 	return (&environ[index][i]);
 }
+
+/**
+ * change_pwd - changes env var to current working directory
+ * @name: environmental variable name
+ * @prgm: prgm name
+ * @count: how many lines user entered
+ */
+void change_pwd(char *name, char *prgm, int count)
+{
+	char *pwd, *buf = NULL, *args[4];
+	size_t size = 0;
+	int env;
+
+	pwd = getcwd(buf, size);
+	if (pwd == NULL)
+	{
+		print_error("Error: mem allocation\n");
+		exit(EXIT_FAILURE);
+	}
+	args[0] = "setenv", args[1] = name, args[2] = pwd, args[3] = NULL;
+	env = _setenv(args, prgm, count), env++;
+	free(pwd);
+}
+
+/**
+ * change_oldpwd - changes OLDPWD value to PWD value
+ * @prgm: prgm name
+ * @count: how many lines user entered
+ */
+void change_oldpwd(char *prgm, int count)
+{
+	char *pwd, *args[4];
+	int env;
+
+	pwd = _getenv("PWD");
+	args[0] = "setenv", args[1] = "OLDPWD", args[2] = pwd, args[3] = NULL;
+	env = _setenv(args, prgm, count), env++;
+}

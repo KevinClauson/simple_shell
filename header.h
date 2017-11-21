@@ -64,4 +64,6 @@ int print_count(va_list ap);
 int _putchar(const char c);
 int handle_specifiers(va_list args, char c);
 int print_error(const char *format, ...);
+void change_pwd(char *name, char *prgm, int count);
+void change_oldpwd(char *prgm, int count);
 #endif

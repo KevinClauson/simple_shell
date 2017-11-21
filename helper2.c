@@ -58,7 +58,6 @@ char **create_env(void)
 }
 /**
  * free_env - frees environ copy
- * @my_environ: copy of extern environ var
  */
 void free_env(void)
 {

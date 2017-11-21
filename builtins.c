@@ -92,12 +92,25 @@ int _unsetenv(char **args, char *prgm, int count)
 int my_cd(char **args, char *prgm, int count)
 {
 	if (args[1] == NULL)
-		return (chdir(_getenv("HOME")));
-	if (chdir(args[1]) == -1)
 	{
-		print_error("%s: %d: cd: can't cd to %s\n", prgm, count, args[1]);
-		return (2);
+		change_pwd("OLDPWD", prgm, count);
+		chdir(_getenv("HOME"));
 	}
+	else if (_strcmp(args[1], "-") == 0)
+	{
+		chdir(_getenv("OLDPWD"));
+		change_oldpwd(prgm, count);	
+	}
+	else
+	{
+		change_oldpwd(prgm, count);
+		if (chdir(args[1]) == -1)
+		{
+			print_error("%s: %d: cd: can't cd to %s\n", prgm, count, args[1]);
+			return (2);
+		}
+	}
+	change_pwd("PWD", prgm, count);
 	return (0);
 }
 /**
@@ -125,7 +138,10 @@ int _setenv(char **args, char *prgm, int count)
 		len1++;
 	buffer = malloc((_strlen(args[1]) + _strlen(args[2]) + 2));
 	if (buffer == NULL)
-		return (-1);
+	{
+		print_error("Error: mem allocation\n");
+		exit(EXIT_FAILURE);
+	}
 	_strcpy(buffer, args[1]);
 	_strcat(buffer, "=");
 	if (args[2])
