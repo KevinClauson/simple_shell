@@ -110,10 +110,7 @@ void exec_cmd(char **args, char **path, char *prgm, int count)
 	{
 		buffer_path = malloc(len * sizeof(char));
 		if (buffer_path == NULL)
-		{
-			print_error("Error: mem allocation\n");
 			exit(EXIT_FAILURE);
-		}
 		/* this loop checks user's cmd against PATH dirs, executes cmd if found */
 		for ( ; path[i]; i++)
 		{
@@ -121,10 +118,7 @@ void exec_cmd(char **args, char **path, char *prgm, int count)
 			{
 				buffer_path = _realloc(buffer_path, len, _strlen(path[i]));
 				if (buffer_path == NULL)
-				{
-					print_error("Error: mem allocation\n");
 					exit(EXIT_FAILURE);
-				}
 			}
 			_strcpy(buffer_path, path[i]);
 			_strcat(buffer_path, "/");
