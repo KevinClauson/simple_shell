@@ -5,7 +5,7 @@
  * @args: ptr to str of args
  * @prgm: prgm name for print error
  * @count: count user input for print error
- * Return: 1 if exit receives invalid arg
+ * Return: 2 if exit receives invalid arg
  */
 int my_exit(char **args, char *prgm, int count)
 {
@@ -24,7 +24,8 @@ int my_exit(char **args, char *prgm, int count)
 	}
 	if (args[1][i] == '\0')
 		exit(num);
-	return (1);
+	print_error("%s: %d: exit: Illegal number: %s\n", prgm, count, args[1]);	
+	return (2);
 }
 
 /**
