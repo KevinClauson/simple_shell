@@ -50,7 +50,7 @@ char *my_strtok(char *s, char *delim)
 	static char *lasts;
 	int ch;
 
-	if (s == '\0')
+	if (s == 0)
 		s = lasts;
 	do {
 		ch = *s++;
@@ -62,6 +62,6 @@ char *my_strtok(char *s, char *delim)
 	--s;
 	lasts = s + _strcspn(s, delim);
 	if (*lasts != 0)
-		*lasts++ = '\0';
+		*lasts++ = 0;
 	return (s);
 }
