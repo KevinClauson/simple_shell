@@ -168,7 +168,6 @@ int main(int __attribute__((unused)) argc, char *argv[])
 		path_val = copy_path();
 		path = parse_args(path_val, ":\n");
 		/*************************************************************************/
-
 		is_builtin = check_builtin(args, argv[0], count);
 		/* if cmd not built-in, create child process and check PATH for valid cmd */
 		if (is_builtin == 117)
