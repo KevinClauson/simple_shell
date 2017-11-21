@@ -24,7 +24,7 @@ int my_exit(char **args, char *prgm, int count)
 	}
 	if (args[1][i] == '\0')
 		exit(num);
-	print_error("%s: %d: exit: Illegal number: %s\n", prgm, count, args[1]);	
+	print_error("%s: %d: exit: Illegal number: %s\n", prgm, count, args[1]);
 	return (2);
 }
 
@@ -158,4 +158,3 @@ int _setenv(char **args, char *prgm, int count)
 	}
 	return (0);
 }
-
