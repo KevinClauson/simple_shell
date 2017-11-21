@@ -13,8 +13,10 @@ char **parse_args(char *line, char *delim)
 	char **args = malloc(len * sizeof(char *));
 
 	if (args == NULL || line == NULL)
+	{
+		print_error("Error: mem allocation\n");
 		exit(EXIT_FAILURE);
-
+	}
 	token = my_strtok(line, delim);
 	while (token != NULL)
 	{
@@ -25,7 +27,10 @@ char **parse_args(char *line, char *delim)
 			new_size = len * 2;
 			args = _realloc(args, len * sizeof(char *), new_size * sizeof(char *));
 			if (args == NULL)
+			{
+				print_error("Error: mem allocation\n");
 				exit(EXIT_FAILURE);
+			}
 			len = new_size;
 		}
 		token = my_strtok(NULL, delim);
@@ -105,7 +110,10 @@ void exec_cmd(char **args, char **path, char *prgm, int count)
 	{
 		buffer_path = malloc(len * sizeof(char));
 		if (buffer_path == NULL)
-			_exit(1);
+		{
+			print_error("Error: mem allocation\n");
+			exit(EXIT_FAILURE);
+		}
 		/* this loop checks user's cmd against PATH dirs, executes cmd if found */
 		for ( ; path[i]; i++)
 		{
@@ -113,7 +121,10 @@ void exec_cmd(char **args, char **path, char *prgm, int count)
 			{
 				buffer_path = _realloc(buffer_path, len, _strlen(path[i]));
 				if (buffer_path == NULL)
-					_exit(127);
+				{
+					print_error("Error: mem allocation\n");
+					exit(EXIT_FAILURE);
+				}
 			}
 			_strcpy(buffer_path, path[i]);
 			_strcat(buffer_path, "/");

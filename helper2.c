@@ -40,7 +40,10 @@ char **create_env(void)
 		len1++;
 	my_environ = malloc((len1 + 1) * sizeof(char *));
 	if (my_environ == NULL)
-		return (NULL);
+	{
+		print_error("Error: mem allocation\n");
+		exit(EXIT_FAILURE);
+	}
 	for (i = 0; i < len1; i++)
 	{
 		my_environ[i] = malloc((_strlen(environ[i]) + 1) * sizeof(char));
@@ -78,7 +81,10 @@ char *copy_path(void)
 
 	path_val = malloc(_strlen(_getenv("PATH")) * 2);
 	if (path_val == NULL)
-		return (NULL);
+	{
+		print_error("Error: mem allocation\n");
+		exit(EXIT_FAILURE);
+	}
 	path_val = _strcpy(path_val, _getenv("PATH"));
 	return (path_val);
 }
