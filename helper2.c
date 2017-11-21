@@ -99,7 +99,7 @@ void check_comment(char **line)
 
 	for (i = 0; (*line)[i]; i++)
 	{
-		if ((*line)[i] == '#')
+		if ((*line)[i] == ' ' && (*line)[i + 1] == '#')
 		{
 			(*line)[i] = '\0';
 			break;
