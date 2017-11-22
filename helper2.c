@@ -82,8 +82,8 @@ char *copy_path(void)
 	path_val = malloc(_strlen(_getenv("PATH")) * 2);
 	if (path_val == NULL)
 	{
-		print_error("Error: mem allocation\n");
-		exit(EXIT_FAILURE);
+		path_val = "";
+		return (path_val);
 	}
 	path_val = _strcpy(path_val, _getenv("PATH"));
 	return (path_val);

@@ -36,6 +36,8 @@ char *_getenv(const char *name)
 	int index = get_index(name);
 	int i = 0;
 
+	if (index < 0)
+		return (NULL);
 	while (environ[index][i] != '=')
 		i++;
 	i++;

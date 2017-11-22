@@ -12,11 +12,8 @@ char **parse_args(char *line, char *delim)
 	char *token;
 	char **args = malloc(len * sizeof(char *));
 
-	if (args == NULL || line == NULL)
-	{
-		print_error("Error: mem allocation\n");
-		exit(EXIT_FAILURE);
-	}
+	if (args == NULL)
+		return (NULL);
 	token = my_strtok(line, delim);
 	while (token != NULL)
 	{
@@ -162,8 +159,7 @@ int main(int __attribute__((unused)) argc, char *argv[])
 		if (line[0] == '#')
 			continue;
 		check_comment(&line);	/* looks for '#' so comments ignored in input */
-		args = parse_args(line, "\n \t");
-
+		args = parse_args(line, "\n \t\r");
 		/* copy and parse PATH - copied so environ PATH unaffected after parsing */
 		path_val = copy_path();
 		path = parse_args(path_val, ":\n");
