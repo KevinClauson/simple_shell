@@ -117,20 +117,14 @@ int _setenv(char **args, char *prgm, int count)
 	(void) prgm, (void) count;
 
 	if (args[1] && args[2] && args[3])
-	{
-		print_error("setenv: Too many arguments\n");
 		return (-1);
-	}
 	if (args[1] == NULL)
 		return (print_env(args, prgm, count));
 	while (environ[len1])
 		len1++;
 	buffer = malloc((_strlen(args[1]) + _strlen(args[2]) + 2));
 	if (buffer == NULL)
-	{
-		print_error("Error: mem allocation\n");
 		exit(EXIT_FAILURE);
-	}
 	_strcpy(buffer, args[1]);
 	_strcat(buffer, "=");
 	if (args[2])
