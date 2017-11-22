@@ -135,6 +135,8 @@ int _setenv(char **args, char *prgm, int count)
 	_strcat(buffer, "=");
 	if (args[2])
 		_strcat(buffer, args[2]);
+	else
+		_strcat(buffer, " ");
 	if (i >= 0)
 	{
 		free(environ[i]);
