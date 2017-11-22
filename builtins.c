@@ -37,23 +37,14 @@ int my_exit(char **args, char *prgm, int count)
  */
 int print_env(char **args, char *prgm, int count)
 {
-	size_t i;
-	char **env_aux;
-	char *cnt;
+	size_t i = 0;
 	(void) prgm, (void) count;
 
 	if (args == NULL || args[0] == NULL)
-		return (1);
-	for (env_aux = environ; *env_aux != NULL; env_aux++)
+		exit(EXIT_FAILURE);
+	for ( ; environ[i]; i++)
 	{
-		cnt = *env_aux;
-		i = 0;
-		while (*cnt)
-		{
-			++cnt;
-			++i;
-		}
-		write(STDOUT_FILENO, *env_aux, i);
+		write(STDOUT_FILENO, environ[i], _strlen(environ[i]));
 		write(STDOUT_FILENO, "\n", 1);
 	}
 	return (0);
