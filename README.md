@@ -6,7 +6,7 @@ Simple Shell: *a shell that handles simple commands*
 ``Simple Shell`` is a program that reads from the standard input and tries to interpret the user input as commands.
 
 ### How it works
-When a user types a command and presses enter, the command is read to the standard input. ``Simple shell`` tokenizes the line entered. To determine if the arguments are valid commands, the program first searches its built-in commands. If it is a built-in command, the shell executes that command. Otherwise, the program check every directory in PATH and attempt to execute a command given a directory and a user command.
+When a user types a command and presses enter, the command is read to the standard input. ``Simple shell`` tokenizes the line entered. To determine if the arguments are valid commands, the program first searches its built-in commands. If it is a built-in command, the shell executes that command. Otherwise, the program check every directory in PATH and attempt to execute a command given a directory and a user command. Write-up [here](https://lancesanity.github.io/blog/Shell-Project)
 
 ### How to compile
 `gcc -Wall -Werror -Wextra -pedantic *.c -o hsh`. To execute the program, `./hsh` and `Enter`.
@@ -26,3 +26,10 @@ When a user types a command and presses enter, the command is read to the standa
 | getenv.c | Function: `getenv()` - gets the values for an environment variable |
 | strtok.c | Function: `strtok()` - tokenizes a string given a delimiter |
 | header.h | Header file with function prototypes, headers, global variables, macros, and structs |
+
+### Allowed functions and system calls
+`access` `chdir` `close` `closedir` `execve` `exit` `fork` `free` `stat` `lstat` `fstat` `getcwd` `getline` `kill` `malloc`
+`open` `opendir` `perror` `read` `readdir` `signal` `strtok` `wait` `waitpid` `wait3` `wait4` `write` `_exit` `isatty` `fflush`
+
+### How this executes commands from PATH
+Since we were limited to `execve()`, we needed to find a way to search PATH if the executable's directory was not given by the user (as opposed to `execvr` which searches PATH for you). Our method is to try the command with every directory until a command was successfully executed. If the command wasn't executed, it doesn't exist within the PATH directories.
