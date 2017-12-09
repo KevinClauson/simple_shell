@@ -6,7 +6,7 @@ Simple Shell: *a shell that handles simple commands*
 ``Simple Shell`` is a program that reads from the standard input and tries to interpret the user input as commands.
 
 ### How it works
-When a user types a command and presses enter, the command is read to the standard input. ``Simple shell`` tokenizes the line entered. To determine if the arguments are valid commands, the program first searches its built-in commands. If it is a built-in command, the shell executes that command. Otherwise, the program check every directory in PATH and attempt to execute a command given a directory and a user command. Blog post: [How Does a Shell Work?](https://lancesanity.github.io/blog/Shell-Project)
+When a user types a command and presses enter, the command is read to the standard input. ``Simple shell`` tokenizes the line entered. To determine if the arguments are valid commands, the program first searches its built-in commands. If it is a built-in command, the shell executes that command. Otherwise, the program check every directory in PATH and attempt to execute a command given a directory and a user command. Blog post: [How Does the Shell Work?](https://lancesanity.github.io/blog/Shell-Project)
 
 ### How to compile
 `gcc -Wall -Werror -Wextra -pedantic *.c -o hsh`. To execute the program, `./hsh` and `Enter`.
